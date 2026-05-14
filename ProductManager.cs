@@ -1,7 +1,8 @@
+
 class ProductManager {
 List <Product> products = new List<Product>();
     public void AddProduct() {  
-    while (true) {
+        while (true) {
             Console.Write("Enter Category: ");
             string userInputCategory = Console.ReadLine() ?? "";
     
@@ -37,18 +38,32 @@ List <Product> products = new List<Product>();
         products.Add(product1);
         Console.WriteLine("Product added successfully!");
         }
+    }
 
+    public void ShowProducts() {
+        List<Product> sortedList = products.OrderBy(product => product.Price).ToList();
 
-
-        Console.WriteLine("\nCategory".PadRight(20));
-        Console.WriteLine("----------------------------------------------------");
-
+        Console.WriteLine("\nCategory".PadRight(20) + "Product name".PadRight(30) + "Price");
+        Console.WriteLine("-----------------------------------------------------------");
        
-        foreach (Product item in products) {
+        foreach (Product item in sortedList) {
             Console.Write(item.Category.PadRight(20));
+            Console.Write("|".PadRight(5));
             Console.Write(item.Name.PadRight(20));
-            Console.Write(item.Price);
+            Console.Write("|".PadRight(5));
+            Console.Write($"{item.Price} kr");
             Console.Write("\n");
         }
+    }
+
+    public void CalculateTotal() {
+        double total = 0;
+
+        foreach (Product item in products) {
+            total += item.Price;
+        }
+        Console.WriteLine("------------------------------");
+        Console.WriteLine($"Total price: {total}");
+        Console.WriteLine("------------------------------");
     }
 }
