@@ -86,6 +86,26 @@ class ProductManager {
         }
     }
 
+
+    public void SearchProducts() {
+        Console.Write("Search Product: ");
+        string userSearchInput = Console.ReadLine()?.Trim().ToLower() ?? "";
+
+        var searchProducts = products.Where(product => product.Name.ToLower().Contains(userSearchInput) || product.Category.ToLower().Contains(userSearchInput)).ToList();
+
+        if(searchProducts.Count == 0) {
+            Console.WriteLine("No products found.");
+        } else {
+            Console.WriteLine("FOUND PRODUCTS:");
+            foreach (Product item in searchProducts) {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"{item.Category} | {item.Name} | {item.Price} kr");
+                Console.ResetColor();
+            }
+        }
+        
+    }
+
     public void CalculateTotal() {
         double sum = products.Sum(product => product.Price);
 
