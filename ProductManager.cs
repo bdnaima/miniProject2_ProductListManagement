@@ -1,42 +1,72 @@
 
 class ProductManager {
-List <Product> products = new List<Product>();
-    public void AddProduct() {  
+    List <Product> products = new List<Product>();
+    public void AddProduct() {
+        Console.WriteLine("PRODUCT LIST APPLICATION");
+        Console.WriteLine("Type 'q' to quit");
+
         while (true) {
             Console.Write("Enter Category: ");
             string userInputCategory = Console.ReadLine() ?? "";
     
-        if (userInputCategory.Trim() == "q") {
-            break;
-        }
-
-        Console.Write("Enter Name: ");
-            string userInputName = Console.ReadLine() ?? "";
-
-        if (userInputName.Trim() == "q") {
-            break;
-        }
-
-        Console.Write("Enter Price: ");
-            string userInputPriceInput = Console.ReadLine() ?? "";
-            double userInputPrice;
-
-        if (userInputPriceInput.Trim() == "q") {
-            break;
-        }
-
-        while (true) {
-            if (!double.TryParse(userInputPriceInput, out userInputPrice)) {
-                Console.WriteLine("Error: Invalid number. Enter a valid number.");
-                Console.Write("Enter Price: ");
-                userInputPriceInput = Console.ReadLine() ?? "";
-            } else {
+            if (userInputCategory.Trim() == "q") {
                 break;
             }
-        }
-        Product product1 = new Product(userInputCategory, userInputName, userInputPrice);
-        products.Add(product1);
-        Console.WriteLine("Product added successfully!");
+
+            // Check if product name is empty
+            string userInputName;
+            while(true) {
+                Console.Write("Enter Product Name: ");
+                userInputName = Console.ReadLine() ?? "";
+                
+                if (userInputName.Trim() == "q") {
+                    break;
+                }
+
+                if(string.IsNullOrWhiteSpace(userInputName)) {
+                    Console.WriteLine("ERROR:");
+                    Console.WriteLine("You must provide a name.");
+                   continue;
+                } 
+
+                break;
+            }
+            if (userInputName.Trim() == "q") {
+                break;
+            }
+         
+            // Check input is valid number and check if number negative
+            string userInputPriceInput;
+            double userInputPrice = 0;
+            while (true) {
+                Console.Write("Enter Product Price: ");
+                userInputPriceInput = Console.ReadLine() ?? "";
+          
+                if (userInputPriceInput.Trim() == "q") {
+                    break;
+                }
+
+                if (!double.TryParse(userInputPriceInput, out userInputPrice)) {
+                    Console.WriteLine("ERROR:");
+                    Console.WriteLine("Invalid price. Enter a numeric value.");
+                    continue;
+                }
+
+                if(userInputPrice < 0) {
+                    Console.WriteLine("ERROR:");
+                    Console.WriteLine("Price cannot be negative");
+                    continue;
+                }
+
+                break;
+            }
+            if (userInputPriceInput.Trim() == "q") {
+                break;
+            }
+
+            Product product1 = new Product(userInputCategory, userInputName, userInputPrice);
+            products.Add(product1);
+            Console.WriteLine("Product added successfully!");
         }
     }
 
@@ -57,13 +87,10 @@ List <Product> products = new List<Product>();
     }
 
     public void CalculateTotal() {
-        double total = 0;
+        double sum = products.Sum(product => product.Price);
 
-        foreach (Product item in products) {
-            total += item.Price;
-        }
         Console.WriteLine("------------------------------");
-        Console.WriteLine($"Total price: {total}");
+        Console.WriteLine($"Total price: {sum} kr");
         Console.WriteLine("------------------------------");
     }
 }
